@@ -1,0 +1,30 @@
+name: Daily Bond Yield Tracker
+
+on:
+  schedule:
+    # Runs at 5:00 PM EST (21:00 UTC) every weekday
+    - cron: '0 21 * * 1-5'
+  workflow_dispatch: # Allows you to run it manually to test
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install libraries
+      run: |
+        pip install pandas requests boto3
+
+    - name: Run my script
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: python fred.py
