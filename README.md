@@ -1,36 +1,39 @@
 # bond-yield-monitor
 
-# 📈 Automated Bond Yield Data Pipeline
+# 📈 Bond Yield Monitoring Pipeline
 
-An end-to-end data engineering project that automates the extraction, transformation, and cloud storage of U.S. Treasury Bond yield data.
+A professional end-to-end data engineering pipeline that automates the collection, storage, and visualization of 10-Year Treasury Yield data.
 
-## 🛠️ Tech Stack
-* **Language:** Python (Pandas, Requests, Boto3)
-* **API:** Federal Reserve Economic Data (FRED)
-* **Cloud:** AWS S3 (Storage)
-* **Automation:** GitHub Actions (CI/CD)
-* **Security:** Environment Variables & GitHub Secrets
+## 🚀 Architecture Overview
+- **Data Source:** FRED (Federal Reserve Economic Data) API.
+- **Storage:** Amazon S3 (AWS Data Lake).
+- **Orchestration:** GitHub Actions (Daily automated runs).
+- **Visualization:** Power BI Desktop with Direct S3 Integration.
 
-## ⚙️ How it Works
-1. **Extraction:** Python script fetches daily 10-Year Treasury Yield data via the FRED API.
-2. **Transformation:** Data is cleaned and formatted into a structured CSV using Pandas.
-3. **Storage:** The processed file is automatically uploaded to an AWS S3 bucket.
-4. **Orchestration:** A GitHub Actions workflow triggers the script daily at market close.
+---
+
+## 📂 Project Structure
+- `fred.py`: The core ingestion engine. Extracts data from FRED and uploads it to S3.
+- `powerbi_connector.py`: 🆕 The script used inside Power BI to fetch data directly from S3.
+- `FRED_LINK_GEN.py`: Utility tool for generating secure, time-bound "Presigned URLs" (1-hour access).
+- `.gitignore`: Ensures local credentials in `.env` are never pushed to GitHub.
+
+---
 
 ## 🔐 Cloud Ingestion Layer (AWS S3)
+This project supports two distinct ways to connect S3 data to Power BI:
 
-To move beyond local files, this project supports two secure cloud-based ingestion methods for Power BI:
+### 1. Automated Integration (Main Dashboard)
+Uses the `boto3` library directly within Power BI's Python connector. This ensures the dashboard stays up-to-date with every refresh without manual intervention.
 
-### 🛠️ Connection Methods
-1. **Direct Integration (Recommended for Automation):** - Uses the `boto3` library directly inside Power BI's Python connector.
-   - Fetches fresh data during every dashboard refresh using environment-stored credentials.
-2. **Secure Temporary Access (Utility Script):** - Run `FRED_link_gen.py` to generate a **Presigned URL**.
-   - Provides a time-bound (1-hour) link for web-based tools without exposing master keys.
+### 2. Secure Temporary Access (Utility)
+Run `FRED_LINK_GEN.py` to create a **Presigned URL**. This is ideal for sharing data with external stakeholders who don't have AWS access, providing them a secure "VIP link" that expires after 60 minutes.
 
-### 💻 Local Development Setup
-To run these scripts locally without hardcoding keys:
-1. Create a `.env` file in the root directory.
-2. Add your credentials:
+---
+
+## 🛠️ Local Setup
+1. Clone the repository.
+2. Create a `.env` file in the root directory:
    ```text
-   AWS_ACCESS_KEY_ID=your_key_here
-   AWS_SECRET_ACCESS_KEY=your_secret_here
+   AWS_ACCESS_KEY_ID=your_access_key
+   AWS_SECRET_ACCESS_KEY=your_secret_key
