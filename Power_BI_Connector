@@ -1,0 +1,27 @@
+import pandas as pd
+import io
+import os
+import boto3
+
+# Configuration
+BUCKET_NAME = "bonds-data-anirudha-4399"
+FILE_KEY = "bonds_data_cloud.csv"
+
+# Credentials (Power BI uses local environment variables)
+ACCESS_KEY = os.environ.get("AWS_ACCESS_KEY_ID")
+SECRET_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+
+# 1. Connect to S3
+s3 = boto3.client(
+    's3',
+    aws_access_key_id=ACCESS_KEY,
+    aws_secret_access_key=SECRET_KEY,
+    region_name='ap-south-1' # Your actual bucket region
+)
+
+# 2. Directly Fetch the Data (The "Direct Integration" method)
+response = s3.get_object(Bucket=BUCKET_NAME, Key=FILE_KEY)
+data = response['Body'].read().decode('utf-8')
+
+# 3. Load into Power BI's required DataFrame format
+dataset = pd.read_csv(io.StringIO(data))
