@@ -14,8 +14,7 @@ data = response.json()
 df=pd.DataFrame(data['observations'])
 df.head()
 df1=df.copy()
-df1=df1[df1['value'] != '.']
-df1
+df1=df1.loc[df1['value']!='.',['date','value']]
 df2=df1.to_csv('bonds_data.csv', index=False)
 bd=pd.read_csv('bonds_data.csv')
 bd.head()
