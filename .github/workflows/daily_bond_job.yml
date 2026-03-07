@@ -21,10 +21,15 @@ jobs:
 
     - name: Install libraries
       run: |
-        pip install pandas requests boto3
+        pip install pandas requests boto3 matplotlib python-dotenv
 
     - name: Run my script
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: python fred.py
+    - name: Run Advanced Yield Spread Pipeline
+      env:
+        ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        SECRET_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: python Advanced_python_project/Multi_series_yield.py
