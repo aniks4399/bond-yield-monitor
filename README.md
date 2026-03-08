@@ -9,8 +9,6 @@ Full Curve Monitoring: Real-time tracking of the 3-Month, 2-Year, 5-Year, 10-Yea
 
 Recession Signal Analytics: Automated calculation of the 2Y-10Y Spread and the 3M-10Y Spread (the Federal Reserve's preferred metric) to identify Yield Curve Inversions.
 
-Inflation Insight: Integrated tracking of 10Y TIPS Breakeven Rates to monitor market-based inflation expectations.
-
 Predictive Intelligence: (In Progress) A Machine Learning pipeline leveraging Random Forest algorithms to forecast spread movements and economic shifts.
 
 # **⚙️ System Architecture**
