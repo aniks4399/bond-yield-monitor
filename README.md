@@ -1,10 +1,10 @@
 # bond-yield-monitor
 
-#📈 Automated Bond Market Analytics & Macro-Forecasting System
+##**📈 Automated Bond Market Analytics & Macro-Forecasting System**
 
 A professional-grade financial data engine designed to monitor the U.S. Treasury Yield Curve and generate real-time Recession Probability Signals. This system automates the extraction of macroeconomic data, computes sophisticated derived metrics, and provides the foundation for predictive machine learning models.
 
-#🎯 Key Analytical Capabilities
+#**🎯 Key Analytical Capabilities**
 Full Curve Monitoring: Real-time tracking of the 3-Month, 2-Year, 5-Year, 10-Year, and 30-Year Treasury yields.
 
 Recession Signal Analytics: Automated calculation of the 2Y-10Y Spread and the 3M-10Y Spread (the Federal Reserve's preferred metric) to identify Yield Curve Inversions.
@@ -13,7 +13,7 @@ Inflation Insight: Integrated tracking of 10Y TIPS Breakeven Rates to monitor ma
 
 Predictive Intelligence: (In Progress) A Machine Learning pipeline leveraging Random Forest algorithms to forecast spread movements and economic shifts.
 
-#⚙️ System Architecture
+**#⚙️ System Architecture**
 Built with production-standard Data Engineering principles:
 
 Extraction: Direct ingestion from the FRED API (St. Louis Fed).
