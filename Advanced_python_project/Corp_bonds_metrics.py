@@ -57,7 +57,7 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, shuffle
 rf_model = RandomForestRegressor(random_state=42)
 rf_model.fit(x_train,y_train.values)
 predictions=rf_model.predict(x_test)
-mae=mean_squared_error(y_test,predictions)
+mse=mean_squared_error(y_test,predictions)
 print(f'Mean Absolute Error: {mae:.4f}')  
 
 # --- KEEP FOR Q2 ROADMAP / COMMENT OUT FOR ARTICLE 6 VISUALS ---
