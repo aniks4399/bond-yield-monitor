@@ -5,13 +5,27 @@
 A professional-grade financial data engine designed to monitor the U.S. Treasury Yield Curve and generate real-time Recession Probability Signals. This system automates the extraction of macroeconomic data, computes sophisticated derived metrics, and provides the foundation for predictive machine learning models.
 
 # **🎯 Key Analytical Capabilities**
-Full Curve Monitoring: Real-time tracking of the 3-Month, 2-Year, 5-Year, 10-Year, and 30-Year Treasury yields.
 
+Full Curve Monitoring: Real-time tracking of the 3-Month, 2-Year, 5-Year, 10-Year, and 30-Year Treasury yields.
 Recession Signal Analytics: Automated calculation of the 2Y-10Y Spread and the 3M-10Y Spread (the Federal Reserve's preferred metric) to identify Yield Curve Inversions.
 
-Predictive Intelligence: (In Progress) A Machine Learning pipeline leveraging Random Forest algorithms to forecast spread movements and economic shifts.
+# Multi-Target Macro-Financial Forecasting Engine 📈
+
+An automated Python pipeline that integrates **Sovereign Bond Yields**, **Corporate Credit Spreads**, and **Exogenous Macro Shocks** (Energy & Volatility) to simulate and forecast yield curve dynamics.
+
+## 🚀 Key Features
+
+- **Multi-Target Machine Learning:** Simultaneously forecasts Treasury Yield Spreads and Corporate Borrowing Costs using Random Forest Regressors.
+- **Macro-Aware Feature Engineering:** Incorporates WTI Crude Oil (Energy Shocks) and VIX (Market Fear) to increase model robustness against geopolitical events.
+- **Production ETL:** Live data ingestion from FRED APIs with automated data cleaning, forward-filling for lags, and data leakage prevention.
+
+## 🛠️ Tech Stack
+
+- **Languages:** Python (Pandas, Scikit-Learn, Matplotlib)
+- **Infrastructure:** AWS S3, GitHub Actions, Boto3
 
 # **⚙️ System Architecture**
+
 Built with production-standard Data Engineering principles:
 
 Extraction: Direct ingestion from the FRED API (St. Louis Fed).
@@ -24,6 +38,7 @@ Security: Professional environment variable management to secure cloud credentia
 
 
 ## 🚀 Architecture Overview
+
 - **Data Source:** FRED (Federal Reserve Economic Data) API.
 - **Storage:** Amazon S3 (AWS Data Lake).
 - **Orchestration:** GitHub Actions (Daily automated runs).
@@ -40,6 +55,7 @@ Security: Professional environment variable management to secure cloud credentia
 ---
 
 ## 🔐 Cloud Ingestion Layer (AWS S3)
+
 This project supports two distinct ways to connect S3 data to Power BI:
 
 ### 1. Automated Integration (Main Dashboard)
