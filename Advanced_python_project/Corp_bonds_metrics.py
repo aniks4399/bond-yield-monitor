@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import boto3
 import os
 from dotenv import load_dotenv
-import sqlite3
 from sklearn.model_selection import train_test_split  
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
