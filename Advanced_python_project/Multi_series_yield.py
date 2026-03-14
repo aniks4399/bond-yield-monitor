@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import boto3
 import os
 from dotenv import load_dotenv
-import sqlite3
 
 load_dotenv()
 fred_key=os.getenv("FRED_API_KEY")
