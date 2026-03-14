@@ -56,7 +56,7 @@ rf_model = RandomForestRegressor(random_state=42)
 rf_model.fit(x_train,y_train.values)
 predictions=rf_model.predict(x_test)
 mse=mean_squared_error(y_test,predictions)
-print(f'Mean Squared Error: {mae:.4f}')  
+print(f'Mean Squared Error: {mse:.4f}')  
 
 # --- KEEP FOR Q2 ROADMAP / COMMENT OUT FOR ARTICLE 6 VISUALS ---
 # live_forecast = rf_model.predict(future_prediction)
