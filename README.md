@@ -8,6 +8,7 @@ A professional-grade financial data engine designed to monitor the U.S. Treasury
 
 Full Curve Monitoring: Real-time tracking of the 3-Month, 2-Year, 5-Year, 10-Year, and 30-Year Treasury yields.
 Recession Signal Analytics: Automated calculation of the 2Y-10Y Spread and the 3M-10Y Spread (the Federal Reserve's preferred metric) to identify Yield Curve Inversions.
+Prediction of next 30 days yield spread for T10Y2Y and Corporate Bonds.
 
 # Multi-Target Macro-Financial Forecasting Engine 📈
 
