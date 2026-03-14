@@ -15,7 +15,7 @@ An automated Python pipeline that integrates **Sovereign Bond Yields**, **Corpor
 
 ## 🚀 Key Features
 
-- **Multi-Target Machine Learning:** Simultaneously forecasts Treasury Yield Spreads and Corporate Borrowing Costs using Random Forest Regressors.
+- **Multi-Target Machine Learning:** Simultaneously forecasts Treasury Yield Spreads and Corporate Borrowing Costs using Random Forest Regressors. Also predicts which macro-economic factor contributes to higher or lower yields for corporate bonds.
 - **Macro-Aware Feature Engineering:** Incorporates WTI Crude Oil (Energy Shocks) and VIX (Market Fear) to increase model robustness against geopolitical events.
 - **Production ETL:** Live data ingestion from FRED APIs with automated data cleaning, forward-filling for lags, and data leakage prevention.
 
