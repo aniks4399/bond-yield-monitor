@@ -10,12 +10,12 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
 
 load_dotenv()
-
+fred_key=os.getenv("FRED_API_KEY")
 series_ids=['DGS30','DGS10','DGS5','DGS2','DGS3MO','T10Y2Y','T10Y3M','DCOILWTICO','VIXCLS','BAMLC0A0CMEY']
 all_bonds_data=[]
 for maturity_id in series_ids:
 
-    url=f"https://api.stlouisfed.org/fred/series/observations?series_id={maturity_id}&api_key=e6e088f7ab2e539f3ea84cb5f14fdad1&file_type=json"
+    url=f"https://api.stlouisfed.org/fred/series/observations?series_id={maturity_id}&api_key={fred_key}&file_type=json"
     response=requests.get(url)
     data=response.json()
     df=pd.DataFrame(data['observations'])
@@ -57,7 +57,7 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, shuffle
 rf_model = RandomForestRegressor(random_state=42)
 rf_model.fit(x_train,y_train.values)
 predictions=rf_model.predict(x_test)
-mse=mean_squared_error(y_test,predictions)
+mae=mean_squared_error(y_test,predictions)
 print(f'Mean Squared Error: {mae:.4f}')  
 
 # --- KEEP FOR Q2 ROADMAP / COMMENT OUT FOR ARTICLE 6 VISUALS ---
