@@ -7,12 +7,12 @@ from dotenv import load_dotenv
 import sqlite3
 
 load_dotenv()
-
+fred_key=os.getenv("FRED_API_KEY")
 series_ids=['DGS30','DGS10','DGS5','DGS2','DGS3MO']
 all_bonds_data=[]
 for maturity_id in series_ids:
 
-    url=f"https://api.stlouisfed.org/fred/series/observations?series_id={maturity_id}&api_key=e6e088f7ab2e539f3ea84cb5f14fdad1&file_type=json"
+    url=f"https://api.stlouisfed.org/fred/series/observations?series_id={maturity_id}&api_key={fred_key}&file_type=json"
     response=requests.get(url)
     data=response.json()
     print(f"Successfully pulled data from {maturity_id}")
