@@ -25,11 +25,14 @@ jobs:
 
     - name: Run my script
       env:
+        FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: python fred.py
+
     - name: Run Advanced Yield Spread Pipeline
       env:
+        FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
         ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
         SECRET_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: python Advanced_python_project/Multi_series_yield.py
