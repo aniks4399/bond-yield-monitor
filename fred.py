@@ -1,40 +1,76 @@
-import requests
-import pandas as pd
-import boto3
 import os
+
+import boto3
+import pandas as pd
+import requests
 from dotenv import load_dotenv
 
-load_dotenv()
-fred_key=os.getenv("FRED_API_KEY")
-url = f"https://api.stlouisfed.org/fred/series/observations?series_id=DGS10&api_key={fred_key}&file_type=json"
+FRED_URL = "https://api.stlouisfed.org/fred/series/observations"
+FRED_SERIES_ID = "DGS10"
+CSV_PATH = "bonds_data.csv"
+S3_BUCKET = "bonds-data-anirudha-4399"
+S3_KEY = "bonds_data_cloud.csv"
+REQUEST_TIMEOUT_SECONDS = 30
 
-# 1. Make the request to the URL
-response = requests.get(url)
 
-# 2. Convert the response to JSON
-data = response.json()
+def get_required_env(*names):
+    for name in names:
+        value = os.getenv(name)
+        if value:
+            return value
 
-df=pd.DataFrame(data['observations'])
-df.head()
-df1=df.copy()
-#df1=df1[df1['value'] != '.']
-#df1=df1[['date','value']]
-df1=df1.loc[df1['value']!='.',['date','value']]
-df2=df1.to_csv('bonds_data.csv', index=False)
-bd=pd.read_csv('bonds_data.csv')
-bd.head()
-AWS_ACCESS_KEY_ID = os.environ.get("ACCESS_KEY")
-AWS_SECRET_ACCESS_KEY = os.environ.get("SECRET_KEY")
-s3=boto3.client(
-    's3',
-    aws_access_key_id=AWS_ACCESS_KEY_ID,
-    aws_secret_access_key=AWS_SECRET_ACCESS_KEY
-)
-print(df1)
-print("Connection is successful!")
-# Upload the file
-# Syntax: s3.upload_file(Source_File, Bucket_Name, Cloud_File_Name)
+    joined_names = ", ".join(names)
+    raise RuntimeError(f"Missing required environment variable. Set one of: {joined_names}")
 
-s3.upload_file('bonds_data.csv', 'bonds-data-anirudha-4399', 'bonds_data_cloud.csv')
 
-print("Upload successful! Check your AWS Console.")     
+def fetch_observations(series_id, api_key):
+    response = requests.get(
+        FRED_URL,
+        params={"series_id": series_id, "api_key": api_key, "file_type": "json"},
+        timeout=REQUEST_TIMEOUT_SECONDS,
+    )
+    response.raise_for_status()
+
+    data = response.json()
+    observations = data.get("observations")
+    if observations is None:
+        error_message = data.get("error_message") or "FRED response did not include observations."
+        raise RuntimeError(f"FRED API error for {series_id}: {error_message}")
+
+    df = pd.DataFrame(observations)
+    if df.empty:
+        raise RuntimeError(f"FRED returned no observations for {series_id}.")
+
+    filtered_df = df.loc[df["value"] != ".", ["date", "value"]].copy()
+    if filtered_df.empty:
+        raise RuntimeError(f"FRED returned observations for {series_id}, but none had usable values.")
+
+    return filtered_df
+
+
+def get_s3_client():
+    access_key = get_required_env("AWS_ACCESS_KEY_ID", "ACCESS_KEY")
+    secret_key = get_required_env("AWS_SECRET_ACCESS_KEY", "SECRET_KEY")
+    return boto3.client(
+        "s3",
+        aws_access_key_id=access_key,
+        aws_secret_access_key=secret_key,
+    )
+
+
+def main():
+    load_dotenv()
+
+    fred_api_key = get_required_env("FRED_API_KEY")
+    bonds_df = fetch_observations(FRED_SERIES_ID, fred_api_key)
+    bonds_df.to_csv(CSV_PATH, index=False)
+
+    s3 = get_s3_client()
+    s3.upload_file(CSV_PATH, S3_BUCKET, S3_KEY)
+
+    print(bonds_df.tail())
+    print("Upload successful! Check your AWS Console.")
+
+
+if __name__ == "__main__":
+    main()
