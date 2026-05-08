@@ -1,0 +1,32 @@
+name: Autonomous Agent on bond yields
+
+on:
+  schedule:
+    # Runs at 5:00 PM EST (21:00 UTC) every month
+    - cron: '0 21 1 * *'
+  workflow_dispatch: # Allows you to run it manually to test
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install libraries
+      run: |
+        pip install pandas requests boto3 python-dotenv google-genai tabulate
+
+    - name: Run my script
+      env:
+        FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: python yield_reporting_agent.py
