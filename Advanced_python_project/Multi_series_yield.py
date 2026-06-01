@@ -1,6 +1,5 @@
 import requests
 import pandas as pd
-import boto3
 import os
 from dotenv import load_dotenv
 
@@ -32,23 +31,11 @@ print(wide_df.head())
 correlation_matrix=wide_df.corr() #to check correlation between the columns of the dataframe nmaely DGS10, DGS2 and yield_spread
 print(correlation_matrix) #The closer a correlation is to -1.0, the stronger the inverse relationship.
 
-csv_file=wide_df.to_csv( index=True) #If we don't use the name, the file will be conveted into one giant text string
+csv_file=wide_df.to_csv('Multi_series_yields.csv' index=True) #If we don't use the name, the file will be conveted into one giant text string
                                      # index=True as index is already the date  column as per the pivot
-AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
-s3=boto3.client(
-    's3',
-    aws_access_key_id=AWS_ACCESS_KEY_ID,
-    aws_secret_access_key=AWS_SECRET_ACCESS_KEY
-)
-s3.put_object(Body=csv_file, Bucket='bonds-data-anirudha-4399', Key='multi_series_bonds/Yield_Spread.csv')
-print("Upload successful! Check your AWS Console.")
-
-wide_df.index=pd.to_datetime(wide_df.index)
-
 '''
 # --- Statistical Visualization ---
-
+wide_df.index=pd.to_datetime(wide_df.index)
 #plt.plot(wide_df.index, wide_df['yield_spread_of_10y_2y'].mean(), label='Yield Spread (10Y - 2Y)', color='orange') using mean would simply take the average of the entire row and give a single value, theredoe using rolling average
 plt.plot(wide_df.index, wide_df['yield_spread_of_10y_2y'].rolling(window=180).mean(), label='Yield Spread (10Y - 2Y)', color='orange')
 # Add the danger line
