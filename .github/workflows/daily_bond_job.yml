@@ -26,7 +26,7 @@ jobs:
     - name: Run my script
       env:
         FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
-      run: python fred.py
+      run: python Advanced_python_project/fred.py
 
     - name: Run Advanced Yield Spread Pipeline
       env:
