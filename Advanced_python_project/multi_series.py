@@ -7,16 +7,37 @@ load_dotenv()
 fred_key=os.getenv("FRED_API_KEY")
 series_ids=['DGS30','DGS10','DGS5','DGS2','DGS3MO']
 all_bonds_data=[]
-for maturity_id in series_ids:
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+}
 
-    url=f"https://api.stlouisfed.org/fred/series/observations?series_id={maturity_id}&api_key={fred_key}&file_type=json"
-    response=requests.get(url)
-    data=response.json()
-    print(f"Successfully pulled data from {maturity_id}")
-    df=pd.DataFrame(data['observations'])
-    df=df.loc[df['value']!='.',['date','value']]
-    df['series_id']=maturity_id
-    all_bonds_data.append(df)
+for maturity_id in series_ids:
+    url = f"https://api.stlouisfed.org/fred/series/observations?series_id={maturity_id}&api_key={fred_key}&file_type=json"
+    
+    # Retry loop for EACH bond maturity
+    for attempt in range(3):
+        try:
+            print(f"Attempt {attempt + 1}: Fetching data for {maturity_id}...")
+            response = requests.get(url, headers=headers)
+            response.raise_for_status() # Crash early if 403 or 429
+            
+            data = response.json()
+            print(f"Successfully pulled data from {maturity_id}")
+            
+            df = pd.DataFrame(data['observations'])
+            df = df.loc[df['value'] != '.', ['date', 'value']]
+            df['series_id'] = maturity_id
+            all_bonds_data.append(df)
+            break # Success! Break out of the retry loop and move to the next bond maturity
+            
+        except (requests.exceptions.RequestException, ValueError) as e:
+            print(f"Warning: {maturity_id} attempt {attempt + 1} failed: {e}")
+            if attempt < 2:
+                print("Waiting 5 seconds before retrying...")
+                time.sleep(5)
+            else:
+                print(f"Error: All retry attempts exhausted for {maturity_id}")
+                raise e
 
 master_df=pd.concat(all_bonds_data,ignore_index=True)
 master_df['value']=pd.to_numeric(master_df['value'])
