@@ -31,7 +31,7 @@ print(wide_df.head())
 correlation_matrix=wide_df.corr() #to check correlation between the columns of the dataframe nmaely DGS10, DGS2 and yield_spread
 print(correlation_matrix) #The closer a correlation is to -1.0, the stronger the inverse relationship.
 
-csv_file=wide_df.to_csv('Multi_series_yields.csv' index=True) #If we don't use the name, the file will be conveted into one giant text string
+csv_file=wide_df.to_csv('Multi_series_yields.csv',index=True) #If we don't use the name, the file will be conveted into one giant text string
                                      # index=True as index is already the date  column as per the pivot
 '''
 # --- Statistical Visualization ---
