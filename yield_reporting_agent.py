@@ -89,8 +89,11 @@ def run_research_agent():
     Focus on how the trend in these specific price movements might impact global inflation 
     expectations and what that could mean for sovereign bond yields.
 
-    Build a model for pedicting yields and yield spreads based on the energy price data and 
+    Build a model for predicting yields and yield spreads based on the energy price data and 
     include a simple analysis of the correlation between them.
+
+    Present actions and policy decisions taken in the past during similar crisis and indicate what actions
+    decision makers might take during present crisis.
     """
     
     print("Analyzing data...")
